@@ -23,11 +23,9 @@
 #gameScore {
 	display: none;
 	float: left;
+	margin-left: 10px;
 }
-#instructions {
-	display: none;
-}
-#afterImg{
+#instructions, #afterImg, #gameOver{
 	display: none;
 }
 #textContainer {

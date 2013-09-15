@@ -50,6 +50,9 @@ SmileRPG.smileCB = function(isSmile){
 	} else if(SmileRPG.firstSmile && !SmileRPG.lost) {
 		SmileRPG.lost = true;
 		var playedTime = Math.floor((new Date().getTime() - SmileRPG.currentTime) / 1000);
+		$('#afterImg').fadeOut(function(){
+			$('#gameOver').fadeIn();
+		});
 		var textToTweet = encodeURIComponent("I reached level "+SmileRPG.currentLvl+" in Smile: RPG! #socialhacking");
 		SmileRPG.TWITTERBTN
 			.attr('href', SmileRPG.TWEETERBASE + 
