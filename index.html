@@ -5,13 +5,29 @@
 	<title>Smile RPG</title>
 	<link href="css/style.css" rel="stylesheet" type="text/css"/>
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script type="text/javascript">
+		google.load("search", "1");
+	</script>
 </head>
 <body>
+	<h1>Smile: RPG</h1>
 	<video id="vid" height="426" width="640" style="visibility:hidden;" autoplay></video>
+	<div id="textContainer">
+		<div id="instructions">
+			<h3>Write below something you hate</h3>
+			<input type="text" id="hateVal" /><button id="hateBtn">Play!</button>
+		</div>
+		<div id="afterImg">
+			<h3>Now try to smile for as long as you can!</h3>
+			Please allow your browser to access your camera.
+		</div>
+	</div>
 	<img id="resultImg" />
-	<div id="level">You're a level <span class="bold">1</span> smiler!</div>
-	<div id="xpToUp"><span class="bold"></span> xp points to level up.</div><div id="xpBar"><div></div></div>
-	<a href="" id="twitterA" target="_blank"></a>
+	<div id="gameScore">
+		<div id="level">You're a level <span class="bold">1</span> smiler!</div>
+		<div id="xpToUp"><span class="bold"></span> xp points to level up.</div><div id="xpBar"><div></div></div>
+		<a href="" id="twitterA" target="_blank"></a>
+	</div>
 	<div id="branding"></div>
 
 	<script type="text/javascript" src="js/haar-detector.js"></script>

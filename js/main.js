@@ -2,55 +2,63 @@ SmileRPG = {};
 
 SmileRPG.init = function() {
 	SmileRPG.XPLABEL.html(SmileRPG.PPL);
-	SmileRPG.initCamera();
 	SmileRPG.TWITTERBTN.click(function(e) {
 		window.open(this.href, '_blank','width=640, height=480');
 	});
-	//google.load("search", "1");
-	//google.setOnLoadCallback(SmileRPG.onGoogleLoad);
-	$.get('https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=fuzzy%20monkey&callback=SmileRPG.processResults');
-}
-
-SmileRPG.processResults = function (d) {
-	$('#resultImg').attr('src', d.responseData.results[0].url);
+	google.setOnLoadCallback(SmileRPG.onGoogleLoad);
 }
 
 SmileRPG.initCamera = function() {
 	var sd = new SmileDetector("vid");
 	sd.onSmile(SmileRPG.smileCB);
 	sd.start(SmileRPG.CBTO);
-	SmileRPG.currentTime = new Date().getTime();
 }
 
 SmileRPG.onGoogleLoad = function () {
 	SmileRPG.imageSearch = new google.search.ImageSearch();
 	SmileRPG.imageSearch.setSearchCompleteCallback(this, SmileRPG.searchComplete, null);
-    SmileRPG.imageSearch.execute("pony");
     // Include the required Google branding
     google.search.Search.getBranding('branding');
+    $('#instructions').show();
+    $('#hateBtn').click(function(e){
+    	e.preventDefault();
+    	var val = $('#hateVal').val().trim();
+    	if(val.length > 0) {
+    		SmileRPG.imageSearch.execute(val);
+    		SmileRPG.searchVal = val;
+    	}
+    });
 }
 
 SmileRPG.smileCB = function(isSmile){
 	if(isSmile) {
 		if(!SmileRPG.lost) {
+			if(!SmileRPG.firstSmile) SmileRPG.currentTime = new Date().getTime();
 			SmileRPG.firstSmile = true;
 			SmileRPG.ptsToNext -= SmileRPG.PPCB;
 			if(SmileRPG.ptsToNext < 1) {
 				SmileRPG.ptsToNext = SmileRPG.PPL;
 				SmileRPG.currentLvl++;
 				SmileRPG.LVLLABEL.html(SmileRPG.currentLvl);
+				SmileRPG.LVLLABEL.animate({'font-size':'+=10px'}, function(){
+					SmileRPG.LVLLABEL.animate({'font-size':'-=9px'});
+				});
 			}
 			SmileRPG.XPLABEL.html(SmileRPG.ptsToNext);
 			SmileRPG.XPBAR.css('width', + (SmileRPG.PPL - SmileRPG.ptsToNext) * 100 / SmileRPG.PPL + '%');
 		}
 	} else if(SmileRPG.firstSmile && !SmileRPG.lost) {
 		SmileRPG.lost = true;
-		var playedTime = (new Date().getTime() - SmileRPG.currentTime) / 1000;
+		var playedTime = Math.floor((new Date().getTime() - SmileRPG.currentTime) / 1000);
 		var textToTweet = encodeURIComponent("I reached level "+SmileRPG.currentLvl+" in Smile: RPG! #socialhacking");
-		SmileRPG.TWITTERBTN.attr('href', SmileRPG.TWEETERBASE + textToTweet).click()
+		SmileRPG.TWITTERBTN
 			.attr('href', SmileRPG.TWEETERBASE + 
-				encodeURIComponent('I allowed a stranger to use my camera for '+playedTime+' seconds! #socialhacking'))
-			.click();
+				encodeURIComponent('I allowed a stranger to access my camera for '+playedTime+' seconds! #socialhacking'))
+			.click()
+			.attr('href', SmileRPG.TWEETERBASE +
+				encodeURIComponent('I spent '+playedTime+' seconds smiling at a picture of '+SmileRPG.searchVal + ' #socialhacking'))
+			.click()
+			.attr('href', SmileRPG.TWEETERBASE + textToTweet).click();
 		
 	}
 
@@ -59,6 +67,11 @@ SmileRPG.smileCB = function(isSmile){
 SmileRPG.searchComplete = function() {
 	if (SmileRPG.imageSearch.results && SmileRPG.imageSearch.results.length > 0) {
 		$('#resultImg').attr('src', SmileRPG.imageSearch.results[0].url);
+		$('#instructions').fadeOut(function(){
+			$('#afterImg').fadeIn();
+			$('#gameScore').fadeIn();
+		});
+		SmileRPG.initCamera();
 	}
 }
 
@@ -78,6 +91,7 @@ SmileRPG.currentTime = 0;
 SmileRPG.firstSmile = false;
 SmileRPG.lost = false;
 SmileRPG.imageSearch = null;
+SmileRPG.searchVal = '';
 
 
 document.addEventListener("DOMContentLoaded", function () {

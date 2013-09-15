@@ -13,3 +13,26 @@
 	height: 25px;
 	border-radius: 5px;
 }
+#vid{
+	position: absolute;
+}
+#resultImg {
+	width: 50%;
+	float: left;
+}
+#gameScore {
+	display: none;
+	float: left;
+}
+#instructions {
+	display: none;
+}
+#afterImg{
+	display: none;
+}
+#textContainer {
+	height: 100px;
+}
+#level > span {
+	color:red;
+}
