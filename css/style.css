@@ -1,3 +1,15 @@
 .bold {
 	font-weight: bold;
 }
+#xpBar {
+	width: 200px;
+	height: 25px;
+	background: red;
+	border-radius: 5px;
+}
+#xpBar > div {
+	display: inline-block;
+	background: green;
+	height: 25px;
+	border-radius: 5px;
+}
