@@ -31,6 +31,7 @@ SmileRPG.onGoogleLoad = function () {
 }
 
 SmileRPG.smileCB = function(isSmile){
+	$('#smilingOrNot').html(isSmile ? 'YES' : 'NO');
 	if(isSmile) {
 		if(!SmileRPG.lost) {
 			if(!SmileRPG.firstSmile) SmileRPG.currentTime = new Date().getTime();
