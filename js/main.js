@@ -53,15 +53,20 @@ SmileRPG.smileCB = function(isSmile){
 		$('#afterImg').fadeOut(function(){
 			$('#gameOver').fadeIn();
 		});
-		var textToTweet = encodeURIComponent("I reached level "+SmileRPG.currentLvl+" in Smile: RPG! #socialhacking");
+		var lvlTxt = "I reached level "+SmileRPG.currentLvl+" in Smile: RPG! #socialhacking";
+		var strangerTxt = 'I allowed a stranger to access my camera for '+playedTime+' seconds! #socialhacking';
+		var playTxt = 'I spent '+playedTime+' seconds smiling at a picture of '+SmileRPG.searchVal + ' #socialhacking';
 		SmileRPG.TWITTERBTN
-			.attr('href', SmileRPG.TWEETERBASE + 
-				encodeURIComponent('I allowed a stranger to access my camera for '+playedTime+' seconds! #socialhacking'))
-			.click()
-			.attr('href', SmileRPG.TWEETERBASE +
-				encodeURIComponent('I spent '+playedTime+' seconds smiling at a picture of '+SmileRPG.searchVal + ' #socialhacking'))
-			.click()
-			.attr('href', SmileRPG.TWEETERBASE + textToTweet).click();
+			.attr('href', SmileRPG.TWEETERBASE + encodeURIComponent(strangerTxt)).click()
+			.attr('href', SmileRPG.TWEETERBASE + encodeURIComponent(playTxt)).click()
+			.attr('href', SmileRPG.TWEETERBASE + encodeURIComponent(lvlTxt)).click();
+		FB.ui({
+			method: 'feed',
+			link: 'http://ataraciuk.github.io/smilerpg',
+			caption: 'Smile: RPG',
+			description: lvlTxt+'\n\n'+playTxt+'\n\n'+strangerTxt,
+			picture: SmileRPG.pictureUrl
+			}, function(response){});
 		
 	}
 
@@ -69,7 +74,8 @@ SmileRPG.smileCB = function(isSmile){
 
 SmileRPG.searchComplete = function() {
 	if (SmileRPG.imageSearch.results && SmileRPG.imageSearch.results.length > 0) {
-		$('#resultImg').attr('src', SmileRPG.imageSearch.results[0].url);
+		SmileRPG.pictureUrl = SmileRPG.imageSearch.results[0].url;
+		$('#resultImg').attr('src', SmileRPG.pictureUrl);
 		$('#instructions').fadeOut(function(){
 			$('#afterImg').fadeIn();
 			$('#gameScore').fadeIn();
@@ -95,8 +101,17 @@ SmileRPG.firstSmile = false;
 SmileRPG.lost = false;
 SmileRPG.imageSearch = null;
 SmileRPG.searchVal = '';
+SmileRPG.pictureUrl = '';
 
 
 document.addEventListener("DOMContentLoaded", function () {
+	$.ajaxSetup({ cache: true });
+	$.getScript('//connect.facebook.net/en_UK/all.js', function(){
+		FB.init({
+	  		appId: '215564378604605',
+	  		channelUrl: '//ataraciuk.github.io/smilerpg/channel.html',
+		}); 
+	});    
+	//$('#loginbutton,#feedbutton').removeAttr('disabled');
 	SmileRPG.init();
 });
