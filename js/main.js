@@ -60,7 +60,7 @@ SmileRPG.smileCB = function(isSmile){
 			method: 'feed',
 			link: 'http://ataraciuk.github.io/smilerpg',
 			caption: 'Smile: RPG',
-			description: (lvlTxt+' '+playTxt+' '+strangerTxt).replace('#socialhacking', ''),
+			description: (lvlTxt+' '+playTxt+' '+strangerTxt).replace(/#socialhacking/g, ''),
 			picture: SmileRPG.pictureUrl
 			}, function(response){}
 		);
