@@ -55,18 +55,19 @@ SmileRPG.smileCB = function(isSmile){
 		});
 		var lvlTxt = "I reached level "+SmileRPG.currentLvl+" in Smile: RPG! #socialhacking";
 		var strangerTxt = 'I allowed a stranger to access my camera for '+playedTime+' seconds! #socialhacking';
-		var playTxt = 'I spent '+playedTime+' seconds smiling at a picture of '+SmileRPG.searchVal + ' #socialhacking';
-		SmileRPG.TWITTERBTN
-			.attr('href', SmileRPG.TWEETERBASE + encodeURIComponent(strangerTxt)).click()
-			.attr('href', SmileRPG.TWEETERBASE + encodeURIComponent(playTxt)).click()
-			.attr('href', SmileRPG.TWEETERBASE + encodeURIComponent(lvlTxt)).click();
+		var playTxt = 'I spent '+playedTime+' seconds smiling at a picture of '+SmileRPG.searchVal + '. #socialhacking';
 		FB.ui({
 			method: 'feed',
 			link: 'http://ataraciuk.github.io/smilerpg',
 			caption: 'Smile: RPG',
-			description: lvlTxt+'\n\n'+playTxt+'\n\n'+strangerTxt,
+			description: (lvlTxt+' '+playTxt+' '+strangerTxt).replace('#socialhacking', ''),
 			picture: SmileRPG.pictureUrl
-			}, function(response){});
+			}, function(response){}
+		);
+		SmileRPG.TWITTERBTN
+			.attr('href', SmileRPG.TWEETERBASE + encodeURIComponent(strangerTxt)).click()
+			.attr('href', SmileRPG.TWEETERBASE + encodeURIComponent(playTxt)).click()
+			.attr('href', SmileRPG.TWEETERBASE + encodeURIComponent(lvlTxt)).click();
 		
 	}
 
